@@ -42,7 +42,7 @@ main:   push    rbp
         call    scanf           ;
         
         mov     rax, name       ; get last char
-.lastc:	inc     rax             ;
+.lastc: inc     rax             ;
         cmp     byte [rax], 0   ;
         jne     .lastc          ;
         
@@ -54,7 +54,7 @@ main:   push    rbp
         
         mov     rax, name-1     ; find occurrence of lett in name
         mov     bl, [lett]      ;
-.find:	inc     rax             ;
+.find:  inc     rax             ;
         cmp     byte [rax], 0   ;
         je      .notfd          ;
         cmp     byte [rax], bl  ;
@@ -62,7 +62,7 @@ main:   push    rbp
         mov     rdi, mfnd       ;
         jmp     .end            ;
 .notfd: mov     rdi, mnfd       ;
-	    
+        
 .end:   xor     rax, rax        ; print result
         call    printf          ;
         
