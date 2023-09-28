@@ -1,0 +1,81 @@
+; ATIVIDADE PRATICA 2 - QUESTÂO 1 
+; JOÃO ROBERTO DA SILVA PORTO - 222217111
+global main
+
+extern scanf
+extern printf
+extern stdout
+extern fflush
+
+section .data
+  prompt_for_name db "Insira seu nome: ", 0
+  prompt_for_letter db "Insira a letra a ser buscada: ", 0
+  found db "A letra foi encontrada", 0
+  not_found db "A letra não foi encontrada", 0
+  name_format db "%s", 0
+  letter_format db "%c", 0
+  first_out db "Primeira Letra: ", 0
+  last_out db 10, "Ultima Letra: ", 0
+
+section .bss 
+  name resb 256
+  letter resb 1
+  check resb 1
+
+section .text
+  main:
+    push rbp
+    mov rbp, rsp
+  
+    mov rdi, prompt_for_name
+    call printf
+    mov rdi, [stdout]
+    call fflush
+
+    mov rdi, name_format
+    mov rsi, name
+    call scanf
+
+    mov rdi, prompt_for_letter
+    call printf
+    mov rdi, [stdout]
+    call fflush
+
+    mov rdi, name_format
+    mov rsi, letter
+    call scanf
+    
+    mov rdi, first_out
+    call printf
+    mov rdi, [stdout]
+    call fflush
+
+    ;printing first letter using syscall (i just have to 
+    ;print the adress value directly)
+    mov rax, 1
+    mov rsi, name
+    mov rdi, 1
+    mov rdx, 1
+    syscall
+
+    mov rax, name
+    mov rsi, [name]
+  .get_last:
+    inc rax
+    cmp byte[rax], 0x0
+    jne .get_last
+  .exit:
+    mov rdi, last_out
+    call printf
+    mov rdi, [stdout]
+    call fflush
+
+    mov rdi, name_format 
+    mov rdx, [rax-1]
+    call printf
+    mov rdi, [stdout]
+    call fflush
+
+    mov     rax, 60
+    xor     rdi, rdi
+    syscall
